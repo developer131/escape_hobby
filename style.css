@@ -5,17 +5,20 @@
 .monthly-stats,.result-stats{display:flex;flex-direction:column;gap:10px;margin:10px 0 22px}.month-row{display:grid;grid-template-columns:88px minmax(50px,1fr) 42px;gap:8px;align-items:center;font-size:.8rem;color:#587392}.month-label{font-weight:700}.month-track{height:12px;border-radius:99px;background:#edf3fb;overflow:hidden}.month-bar{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#a8d8ef,#568dd7)}.month-row>b{text-align:right;color:#2c4c72}.month-row>small{grid-column:2/4;color:#8294a9;font-size:.7rem}.result-line{display:grid;grid-template-columns:10px minmax(0,1fr) 45px 48px;gap:9px;align-items:center;padding:12px;border:1px solid #e4edf8;border-radius:13px;background:#fff;font-size:.85rem}.result-line>b,.result-line>strong{text-align:right;color:#294d76}.result-dot{width:9px;height:9px;border-radius:50%}.success-dot{background:#63bd8b}.fail-dot{background:#e68b91}.unknown-dot{background:#a6b5c8}#statistics h4{margin:20px 0 8px;color:#2b4c72;font-size:.95rem}@media(max-width:520px){.month-row{grid-template-columns:76px minmax(35px,1fr) 36px;gap:6px}.result-line{font-size:.78rem;padding:10px}}
 
 /* Artwork from the approved mascot/icon reference sheet */
-header:before{background:#e3f7f0 url("assets/dino-mascot.png") center/contain no-repeat;border-color:#c8e9df}
-.auth-panel:after{background:url("assets/dino-mascot.png") center/contain no-repeat}
+header:before{background:#e3f7f0 url("assets/pose-key.png") center/contain no-repeat;border-color:#c8e9df}
+.auth-panel:after{background:url("assets/pose-key.png") center/contain no-repeat}
 .section-icon{background:#e5f1ff center/contain no-repeat;font-size:0;overflow:hidden}
-.section-icon[data-icon="team"]{background-image:url("assets/icon-team.png")}
-.section-icon[data-icon="personal"]{background-image:url("assets/icon-personal.png")}
-.section-icon[data-icon="wishlist"]{background-image:url("assets/icon-wishlist.png")}
-.section-icon[data-icon="statistics"]{background-image:url("assets/icon-statistics.png")}
+.section-icon[data-icon="team"]::before{content:"♟";font-size:1.25rem;color:#4b88d5}
+.section-icon[data-icon="personal"]::before{content:"☷";font-size:1.4rem;color:#e18b91}
+.section-icon[data-icon="wishlist"]::before{content:"☆";font-size:1.55rem;color:#e2ad42}
+.section-icon[data-icon="statistics"]::before{content:"▥";font-size:1.35rem;color:#46a98b}
 .stat-icon{width:34px;height:34px;padding:2px;background:transparent;border-radius:0}
 .stat-icon img{display:block;width:100%;height:100%;object-fit:contain}
 .hint-count{display:inline-flex;align-items:center;gap:4px}
 .hint-count img{width:18px;height:18px;object-fit:contain;vertical-align:middle}
 .empty-state{display:flex;align-items:center;justify-content:center;gap:10px}
-.empty-state img{width:44px;height:38px;object-fit:contain;flex:0 0 auto}
+.empty-state img{width:58px;height:48px;object-fit:contain;flex:0 0 auto}
 @media(max-width:520px){header:before{background-size:contain}.stat-icon{width:30px;height:30px}}
+
+/* Remaining time: minute + second fields */
+.time-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.time-inputs>span{display:flex;align-items:center;gap:8px;min-width:0}.time-inputs input{width:100%;min-width:0}.time-inputs small{color:var(--muted,#71849a);font-weight:700}.remaining-chip{display:inline-flex;align-items:center;border-radius:999px;background:#edf4ff;color:#365b87;padding:4px 8px;font-size:.85em;font-weight:700}
