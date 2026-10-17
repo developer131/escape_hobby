@@ -12,7 +12,7 @@ $('showSignup').onclick=showSignupPanel;$('showLogin').onclick=showLoginPanel;
 function authEmail(id){const value=id.trim();return value.includes('@')?value:`${value.toLowerCase()}@users.escape-log.invalid`}
 async function enter(u){user=u;let {data:p,error}=await db.from('profiles').select('nickname,is_approved,is_admin').eq('id',u.id).maybeSingle();if(error||!p||!p.is_approved){await db.auth.signOut();showAuth('승인되지 않은 계정입니다. 관리자에게 문의하세요.');return}profile=p;$('adminNav').classList.toggle('hidden',p.is_admin!==true);$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('logout').classList.remove('hidden');$('welcome').textContent=(p.nickname||u.email)+'님의 방탈출 기록';$('accountId').value=(u.email||'').endsWith('@users.escape-log.invalid')?u.email.split('@')[0]:(u.email||'');$('accountNickname').value=p.nickname||'';await reload()}
 $('login').addEventListener('submit',async e=>{e.preventDefault();$('authMsg').textContent='로그인 중...';const {error}=await db.auth.signInWithPassword({email:authEmail($('loginId').value),password:$('password').value});if(error)$('authMsg').textContent='로그인 실패: 아이디/이메일 또는 비밀번호를 확인하세요.'});
-$('signup').addEventListener('submit',async e=>{e.preventDefault();const id=$('signupId').value.trim().toLowerCase(),nickname=$('signupNickname').value.trim(),password=$('signupPassword').value;if(!/^[a-z0-9._-]{3,30}$/.test(id)){$('signupMsg').textContent='아이디 형식을 확인하세요.';return}if(password!==$('signupPassword2').value){$('signupMsg').textContent='비밀번호가 서로 다릅니다.';return}$('signupMsg').textContent='가입 신청 중...';const {data,error}=await db.auth.signUp({email:authEmail(id),password,options:{data:{nickname}}});if(error){$('signupMsg').textContent='가입 실패: '+error.message;return}if(data.session){await db.auth.signOut();$('signupMsg').textContent='가입 신청이 완료됐습니다. 관리자 승인 후 로그인할 수 있습니다.';showLoginPanel();$('authMsg').textContent='가입 신청 완료. 관리자 승인 대기 중입니다.'}else{$('signupMsg').textContent='가입 신청이 접수됐습니다. Supabase의 이메일 확인 설정이 꺼져 있는지 확인하세요.'}});
+$('signup').addEventListener('submit',async e=>{e.preventDefault();const id=$('signupId').value.trim().toLowerCase(),nickname=$('signupNickname').value.trim(),password=$('signupPassword').value;if(!/^[a-z0-9._-]{3,30}$/.test(id)){$('signupMsg').textContent='아이디 형식을 확인하세요.';return}if(password!==$('signupPassword2').value){$('signupMsg').textContent='비밀번호가 서로 다릅니다.';return}$('signupMsg').textContent='가입 신청 중...';const {data,error}=await db.auth.signUp({email:authEmail(id),password,options:{data:{nickname}}});if(error){const msg=String(error.message||'');if(/already registered|already exists|user already|duplicate|already been registered/i.test(msg)){$('signupMsg').textContent='가입 실패: 해당 아이디의 Supabase Auth 인증 정보가 남아 있습니다. Supabase 대시보드 > Authentication > Users에서 해당 사용자를 삭제한 뒤 다시 가입해 주세요.'}else{$('signupMsg').textContent='가입 실패: '+msg}return}if(data.session){await db.auth.signOut();$('signupMsg').textContent='가입 신청이 완료됐습니다. 관리자 승인 후 로그인할 수 있습니다.';showLoginPanel();$('authMsg').textContent='가입 신청 완료. 관리자 승인 대기 중입니다.'}else{$('signupMsg').textContent='가입 신청이 접수됐습니다. Supabase의 이메일 확인 설정이 꺼져 있는지 확인하세요.'}});
 $('profileForm').addEventListener('submit',async e=>{e.preventDefault();const nickname=$('accountNickname').value.trim();if(!nickname){$('profileMsg').textContent='닉네임을 입력하세요.';return}$('profileMsg').textContent='저장 중...';const {error}=await db.from('profiles').update({nickname}).eq('id',user.id);if(error){$('profileMsg').textContent='저장 실패: '+error.message;return}profile.nickname=nickname;$('welcome').textContent=nickname+'님의 방탈출 기록';$('profileMsg').textContent='닉네임을 저장했습니다.'});
 $('passwordForm').addEventListener('submit',async e=>{e.preventDefault();const password=$('newPassword').value;if(password.length<6){$('passwordMsg').textContent='비밀번호는 6자 이상이어야 합니다.';return}if(password!==$('newPassword2').value){$('passwordMsg').textContent='비밀번호가 서로 다릅니다.';return}$('passwordMsg').textContent='변경 중...';const {error}=await db.auth.updateUser({password});if(error){$('passwordMsg').textContent='변경 실패: '+error.message;return}$('passwordForm').reset();$('passwordMsg').textContent='비밀번호를 변경했습니다.'});
 
@@ -24,17 +24,31 @@ async function loadApplicants(){
   if(error){$('adminMsg').textContent='목록 조회 실패: '+error.message;return}
   const rows=(data||[]).filter(p=>!p.is_admin);
   $('adminMsg').textContent=rows.length?`가입 계정 ${rows.length}개`:'가입 계정이 없습니다.';
-  $('applicantList').innerHTML=rows.map(p=>`<article class="item"><b>${esc(p.nickname||'닉네임 없음')}</b><p class="muted">가입일: ${esc(p.created_at?new Date(p.created_at).toLocaleDateString('ko-KR'):'정보 없음')}</p><p>상태: ${p.is_approved?'승인됨':'승인 대기'}</p><button type="button" data-approve-id="${p.id}" data-approved="${p.is_approved?'true':'false'}">${p.is_approved?'이용 차단':'가입 승인'}</button></article>`).join('')||'<p class="muted">표시할 가입자가 없습니다.</p>';
+  $('applicantList').innerHTML=rows.map(p=>`<article class="item"><b>${esc(p.nickname||'닉네임 없음')}</b><p class="muted">가입일: ${esc(p.created_at?new Date(p.created_at).toLocaleDateString('ko-KR'):'정보 없음')}</p><p>상태: ${p.is_approved?'승인됨':'승인 대기'}</p><button type="button" data-approve-id="${p.id}" data-approved="${p.is_approved?'true':'false'}">${p.is_approved?'이용 차단':'가입 승인'}</button> <button type="button" data-reject-id="${p.id}" data-reject-name="${esc(p.nickname||'이 사용자')}">가입 거부·정보 삭제</button></article>`).join('')||'<p class="muted">표시할 가입자가 없습니다.</p>';
 }
 document.addEventListener('click',async e=>{
+ const reject=e.target.closest('[data-reject-id]');
+ if(reject){
+   if(profile?.is_admin!==true){alert('관리자 권한이 없습니다.');return}
+   const id=reject.dataset.rejectId, name=reject.dataset.rejectName||'이 사용자';
+   if(!confirm(`${name}의 방탈출 페이지 가입 정보를 삭제할까요?\n\n사이트의 profiles 정보만 삭제됩니다. Supabase Auth 인증 정보는 남으므로, 같은 아이디로 재가입할 때 오류가 나면 Supabase 대시보드 > Authentication > Users에서 해당 사용자를 직접 삭제해 주세요.`))return;
+   reject.disabled=true;
+   const {data,error}=await db.rpc('admin_delete_profile',{target_user_id:id});
+   reject.disabled=false;
+   if(error){$('adminMsg').textContent='삭제 실패: '+error.message;return}
+   if(data!==true){$('adminMsg').textContent='삭제되지 않았습니다. 관리자 권한 또는 대상 계정을 확인하세요.';return}
+   $('adminMsg').textContent='가입 정보를 삭제했습니다.';
+   await loadApplicants();return;
+ }
  const btn=e.target.closest('[data-approve-id]');if(!btn)return;
  if(profile?.is_admin!==true){alert('관리자 권한이 없습니다.');return}
  const id=btn.dataset.approveId,wasApproved=btn.dataset.approved==='true',next=!wasApproved;
  if(!confirm(next?'이 계정을 승인할까요?':'이 계정의 이용을 차단할까요?'))return;
  btn.disabled=true;
- const {error}=await db.from('profiles').update({is_approved:next}).eq('id',id).eq('is_admin',false);
+ const {data,error}=await db.rpc('admin_set_approval',{target_user_id:id,approved:next});
  btn.disabled=false;
  if(error){$('adminMsg').textContent='변경 실패: '+error.message;return}
+ if(data!==true){$('adminMsg').textContent='변경되지 않았습니다. 관리자 권한 또는 대상 계정을 확인하세요.';return}
  await loadApplicants();
 });
 

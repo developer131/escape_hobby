@@ -37,3 +37,24 @@ $$;
 revoke all on function public.admin_set_approval(uuid, boolean) from public;
 grant execute on function public.admin_set_approval(uuid, boolean) to authenticated;
 grant select on public.profiles to authenticated;
+
+
+-- 관리자 전용: 방탈출 페이지의 프로필 정보만 삭제합니다.
+-- Supabase Auth 로그인 계정은 삭제하지 않습니다.
+create or replace function public.admin_delete_profile(target_user_id uuid)
+returns boolean
+language plpgsql security definer
+set search_path=''
+as $$
+begin
+  if not public.is_admin_user() then
+    raise exception 'admin only';
+  end if;
+  delete from public.profiles
+   where id = target_user_id and is_admin = false;
+  return found;
+end;
+$$;
+
+revoke all on function public.admin_delete_profile(uuid) from public;
+grant execute on function public.admin_delete_profile(uuid) to authenticated;
