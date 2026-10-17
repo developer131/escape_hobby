@@ -1,6 +1,6 @@
 // Supabase Dashboard > Project Settings > API
-const SUPABASE_URL='YOUR_SUPABASE_PROJECT_URL';
-const SUPABASE_PUBLISHABLE_KEY='YOUR_SUPABASE_PUBLISHABLE_KEY';
+const SUPABASE_URL='https://gkkxwhopjytagkoqnnrn.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_zoU71fWjrIFyT7OctEzRGg_-43FjQy-';
 const $=id=>document.getElementById(id);let db,user,profile,themes=[],shared=[],personal=[],wishes=[];
 const ready=!SUPABASE_URL.includes('YOUR_')&&!SUPABASE_PUBLISHABLE_KEY.includes('YOUR_');
 if(!ready||!window.supabase){$('setup').classList.remove('hidden')}else{db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);init()}
