@@ -22,3 +22,12 @@ header:before{background:#e3f7f0 url("assets/pose-key.png") center/contain no-re
 
 /* Remaining time: minute + second fields */
 .time-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.time-inputs>span{display:flex;align-items:center;gap:8px;min-width:0}.time-inputs input{width:100%;min-width:0}.time-inputs small{color:var(--muted,#71849a);font-weight:700}.remaining-chip{display:inline-flex;align-items:center;border-radius:999px;background:#edf4ff;color:#365b87;padding:4px 8px;font-size:.85em;font-weight:700}
+
+/* Brand artwork fix: use the approved no-hat dinosaur PNG, not the placeholder SVG/key. */
+header:before{background:#dff5eb url("assets/dino-mascot.png") center/contain no-repeat!important;border-color:#ccecdf!important}
+.auth-panel:after{background:url("assets/dino-mascot.png") center/contain no-repeat!important}
+.section-icon{overflow:hidden;padding:3px;background:#e5f1ff!important}
+.section-icon::before{content:none!important}
+.section-icon img{display:block;width:100%;height:100%;object-fit:contain}
+.stat-icon img,.hint-count img,.wish-thumb,.item-thumb{object-fit:contain}
+.empty-state img{object-fit:contain;background:transparent}

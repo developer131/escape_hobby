@@ -1,0 +1,11 @@
+통합 기록 테이블 적용 순서
+
+1. 현재 Supabase와 GitHub 저장소를 백업합니다. 기존 테이블은 삭제하지 마세요.
+2. Supabase SQL Editor에서 unify_play_records_migration.sql 전체를 실행합니다.
+3. SQL 마지막의 count 결과를 확인합니다. shared_play_records 수와 play_records_team 수, personal_play_records 수와 play_records_personal 수가 일치해야 합니다. UUID 충돌이 있으면 개인 기록 ID는 새 UUID로 저장될 수 있습니다.
+4. 이 ZIP의 app.js, index.html, style.css, assets 폴더를 GitHub 저장소에 업로드하고 커밋합니다.
+5. 사이트에서 팀 로그/개인 로그 조회, 추가, 수정, 삭제, 이미지 열기, 공개/비공개, 통계를 각각 확인합니다.
+6. 문제가 있으면 기존 프론트엔드로 되돌릴 수 있습니다. 기존 테이블은 검증 완료 전까지 삭제하지 마세요.
+7. 충분히 검증된 뒤에만 기존 테이블을 정리합니다. 이번 마이그레이션은 자동으로 기존 테이블을 삭제하지 않습니다.
+
+중요: 기존 개인 기록의 visibility='shared'는 통합 테이블에도 shared로 보존됩니다. 팀 기록은 record_type='team', visibility='shared'로 저장됩니다. 개인 기록은 record_type='personal'이며 user_id는 작성자입니다.
