@@ -1,1 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 190"><ellipse cx="111" cy="174" rx="58" ry="9" fill="#c4dcf3"/><g stroke="#315578" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M61 89 40 78 47 101 31 110 55 122 68 111" fill="#79cbb8"/><path d="M75 83 61 65 78 67 84 47 99 61 115 47 123 66 143 64 146 82" fill="#79cbb8"/><path d="M69 88Q72 70 94 68L129 70Q150 73 158 91L177 108Q187 119 174 131L151 141 92 142Q70 139 65 121Z" fill="#8edcc5"/><path d="M123 78Q150 72 164 91L181 108Q189 120 174 129L150 130 131 112Z" fill="#b9f0dc"/><path d="M84 136 80 157Q79 166 91 166H109L115 141" fill="#8edcc5"/><path d="M132 139 140 157Q143 165 132 166H116L116 143" fill="#8edcc5"/><path d="M85 159H107L113 167H81Z M117 159H139L145 167H117Z" fill="#315578"/><path d="M103 118 119 123 115 139 100 136Z" fill="#ffd17b"/><path d="M145 94Q150 88 154 96" fill="none" stroke="#315578" stroke-width="3"/><ellipse cx="150" cy="96" rx="5" ry="7" fill="#203e5e" stroke="none"/><circle cx="152" cy="93" r="2" fill="#fff" stroke="none"/><circle cx="174" cy="115" r="3" fill="#315578" stroke="none"/><path d="M150 124q9 6 17-1" fill="none" stroke="#315578" stroke-width="2.5"/></g><path d="M45 139q-8 4-7 12 9 2 15-5" fill="#ffd17b"/><path d="M170 53l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#ffd17b"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 210" role="img" aria-label="ESCAPE LOG dinosaur mascot">
+<ellipse cx="119" cy="190" rx="58" ry="9" fill="#b9d8ef" opacity=".8"/>
+<!-- tail -->
+<path d="M78 132Q52 137 36 119Q28 110 34 101Q42 93 51 105Q60 116 82 111Z" fill="#72cdb8" stroke="#285577" stroke-width="5" stroke-linejoin="round"/>
+<!-- back plates -->
+<path d="M75 105 66 83 87 91 94 68 108 86 125 64 137 86 154 78 155 101Z" fill="#ffcf78" stroke="#285577" stroke-width="4.5" stroke-linejoin="round"/>
+<!-- body -->
+<path d="M65 123Q62 91 88 82Q111 72 139 83Q160 92 166 116L174 143Q177 160 158 165L91 165Q66 161 65 143Z" fill="#83d8c3" stroke="#285577" stroke-width="5" stroke-linejoin="round"/>
+<!-- belly -->
+<path d="M91 124Q113 110 143 123L151 151Q130 161 101 153Z" fill="#d9f5e7" stroke="#4b9e98" stroke-width="2.5"/>
+<!-- feet -->
+<path d="M83 157 78 176Q76 184 87 184H111L117 163M135 161 143 177Q146 184 157 182L166 178 157 158" fill="#83d8c3" stroke="#285577" stroke-width="5" stroke-linejoin="round"/>
+<path d="M80 177 110 177 115 185H81Q75 184 80 177ZM143 177 163 175 171 182 151 186Q143 185 143 177Z" fill="#285577"/>
+<!-- oversized head -->
+<path d="M113 88Q113 54 143 49Q173 44 190 66Q204 84 196 105Q190 123 165 127L132 120Q115 111 113 88Z" fill="#9be5d0" stroke="#285577" stroke-width="5" stroke-linejoin="round"/>
+<!-- muzzle -->
+<path d="M163 91Q183 89 197 101Q205 110 195 118Q183 124 163 115L151 105Z" fill="#e2f8eb" stroke="#285577" stroke-width="3.5" stroke-linejoin="round"/>
+<!-- eye -->
+<ellipse cx="164" cy="78" rx="9" ry="12" fill="#fff" stroke="#285577" stroke-width="3"/>
+<ellipse cx="167" cy="80" rx="4.5" ry="7" fill="#285577"/>
+<circle cx="169" cy="76" r="2.5" fill="#fff"/>
+<circle cx="194" cy="106" r="3" fill="#285577"/><circle cx="186" cy="112" r="2.5" fill="#285577"/>
+<!-- cheek and smile -->
+<ellipse cx="151" cy="104" rx="7" ry="4" fill="#f4a9aa" opacity=".9"/>
+<path d="M170 113Q180 120 190 113" fill="none" stroke="#285577" stroke-width="3" stroke-linecap="round"/>
+<!-- tiny satchel charm -->
+<path d="M105 133 122 137 119 151 103 147Z" fill="#ffcf78" stroke="#285577" stroke-width="2.5"/>
+<path d="M108 132Q111 125 117 131" fill="none" stroke="#285577" stroke-width="2.5" stroke-linecap="round"/>
+<!-- sparkle -->
+<path d="M48 62 52 72 62 76 52 80 48 90 44 80 34 76 44 72Z" fill="#ffcf78" stroke="#285577" stroke-width="2" stroke-linejoin="round"/>
+</svg>
