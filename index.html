@@ -1,49 +1,13 @@
 <!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ESCAPE LOG</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="app.js"></script>
-</head>
-<body>
-<header><p>PRIVATE ESCAPE ROOM ARCHIVE</p><h1>ESCAPE <span>LOG</span></h1><button id="logout" class="hidden">로그아웃</button></header>
-<main>
-<section id="setup" class="panel hidden"><h2>연결 설정 필요</h2><p>app.js의 Supabase URL과 publishable key를 확인하세요.</p></section>
-<section id="auth" class="panel hidden">
-<h2>멤버 로그인</h2>
-<form id="login">
-<label>아이디 또는 기존 계정 이메일<input id="loginId" autocomplete="username" required></label>
-<label>비밀번호<input id="password" type="password" autocomplete="current-password" required></label>
-<button type="submit">로그인</button>
-</form>
-<hr><h3>새 계정 가입</h3>
-<form id="signup">
-<label>아이디 (영문 소문자·숫자·._- / 3~30자)<input id="signupId" minlength="3" maxlength="30" autocomplete="username" required></label>
-<label>닉네임<input id="signupNickname" maxlength="40" required></label>
-<label>비밀번호 (6자 이상)<input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required></label>
-<button type="submit">가입 신청</button>
-</form>
-<p id="authMsg" role="status"></p>
-</section>
-<section id="app" class="hidden">
-<div class="profile-bar"><h2 id="welcome">방탈출 기록</h2><button id="changeNickname" type="button">닉네임 변경</button></div>
-<nav><button data-view="shared">공동 플레이</button><button data-view="personal">개인 기록</button><button data-view="wishlist">공동 위시</button><button data-view="themes">테마 목록</button></nav>
-<section id="shared" class="view"><h3>공동 플레이 기록</h3><input id="sharedSearch" placeholder="테마·매장·후기 검색"><button data-add="shared">+ 기록 추가</button><div id="sharedList"></div></section>
-<section id="personal" class="view hidden"><h3>개인 플레이 기록</h3><input id="personalSearch" placeholder="검색"><button data-add="personal">+ 기록 추가</button><div id="personalList"></div></section>
-<section id="wishlist" class="view hidden"><h3>공동 위시리스트</h3><input id="wishSearch" placeholder="테마·매장·지역 검색"><button data-add="wish">+ 위시 추가</button><div id="wishList"></div></section>
-<section id="themes" class="view hidden"><h3>테마 목록</h3><input id="themeSearch" placeholder="테마·매장·지역 검색"><button data-add="theme">+ 테마 등록</button><div id="themeList"></div></section>
-</section>
-</main>
-<dialog id="editor"><form id="editForm"><h2 id="editTitle">기록</h2><input id="itemId" type="hidden"><input id="kind" type="hidden">
-<label>기존 테마<select id="themeId"><option value="">직접 입력</option></select></label>
-<label>테마명<input id="themeName" required></label><label>매장명<input id="storeName"></label><label>지역<input id="region"></label>
-<label>날짜<input id="date" type="date"></label><label>결과<select id="result"><option value="unknown">미입력</option><option value="success">탈출 성공</option><option value="fail">탈출 실패</option></select></label>
-<label>남은 시간(분)<input id="remaining" type="number" min="0"></label><label>후기 / 메모<textarea id="note" rows="3"></textarea></label>
-<label id="publicLabel" class="hidden"><input id="public" type="checkbox"> 개인 기록을 공동 공개</label>
-<label id="statusLabel" class="hidden">위시 상태<select id="status"><option value="want">가고 싶음</option><option value="planned">예약/계획함</option><option value="played">플레이 완료</option></select></label>
-<button type="submit">저장</button><button type="button" id="cancel">취소</button><p id="formMsg"></p></form></dialog>
-<footer>멤버 전용 · 개인 기록은 기본 비공개</footer>
-</body></html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ESCAPE LOG</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="app.js"></script></head><body><header><p>PRIVATE ESCAPE ROOM ARCHIVE</p><h1>ESCAPE <span>LOG</span></h1><button id="logout" class="hidden">로그아웃</button></header><main><section id="setup" class="panel hidden"><h2>연결 설정 필요</h2><p>app.js의 Supabase URL과 publishable key를 입력하세요.</p></section><section id="auth" class="auth-wrap hidden">
+  <section id="loginPanel" class="panel auth-panel">
+    <p class="eyebrow">MEMBER ACCESS</p><h2>로그인</h2><p class="muted">가입한 아이디 또는 기존 계정 이메일로 로그인하세요.</p>
+    <form id="login"><label>아이디 또는 기존 계정 이메일<input id="loginId" autocomplete="username" required placeholder="아이디 입력"></label><label>비밀번호<input id="password" type="password" autocomplete="current-password" required placeholder="비밀번호"></label><button class="primary" type="submit">로그인</button></form>
+    <p id="authMsg" class="form-message" role="status"></p><p class="auth-switch">계정이 없으신가요? <button type="button" class="text-button" id="showSignup">회원가입</button></p>
+  </section>
+  <section id="signupPanel" class="panel auth-panel hidden">
+    <p class="eyebrow">CREATE ACCOUNT</p><h2>회원가입</h2><p class="muted">가입 후 관리자의 승인이 완료되면 이용할 수 있습니다.</p>
+    <form id="signup"><label>아이디 <small>(영문 소문자·숫자·._- / 3~30자)</small><input id="signupId" autocomplete="username" minlength="3" maxlength="30" pattern="[a-z0-9._-]{3,30}" required placeholder="예: escape01"></label><label>닉네임<input id="signupNickname" maxlength="30" required placeholder="앱에 표시할 닉네임"></label><label>비밀번호 <small>(6자 이상)</small><input id="signupPassword" type="password" autocomplete="new-password" minlength="6" required placeholder="비밀번호"></label><label>비밀번호 확인<input id="signupPassword2" type="password" autocomplete="new-password" minlength="6" required placeholder="비밀번호 다시 입력"></label><button class="primary" type="submit">가입 신청</button></form>
+    <p id="signupMsg" class="form-message" role="status"></p><p class="auth-switch">이미 계정이 있으신가요? <button type="button" class="text-button" id="showLogin">로그인으로 돌아가기</button></p>
+  </section>
+</section><section id="app" class="hidden"><h2 id="welcome">방탈출 기록</h2><nav><button data-view="shared">공동 플레이</button><button data-view="personal">개인 기록</button><button data-view="wishlist">공동 위시</button><button data-view="themes">테마 목록</button></nav><section id="shared" class="view"><h3>공동 플레이 기록</h3><input id="sharedSearch" placeholder="테마·매장·후기 검색"><button data-add="shared">+ 기록 추가</button><div id="sharedList"></div></section><section id="personal" class="view hidden"><h3>개인 플레이 기록</h3><input id="personalSearch" placeholder="검색"><button data-add="personal">+ 기록 추가</button><div id="personalList"></div></section><section id="wishlist" class="view hidden"><h3>공동 위시리스트</h3><input id="wishSearch" placeholder="테마·매장·지역 검색"><button data-add="wish">+ 위시 추가</button><div id="wishList"></div></section><section id="themes" class="view hidden"><h3>테마 목록</h3><input id="themeSearch" placeholder="테마·매장·지역 검색"><button data-add="theme">+ 테마 등록</button><div id="themeList"></div></section></section></main><dialog id="editor"><form id="editForm"><h2 id="editTitle">기록</h2><input id="itemId" type="hidden"><input id="kind" type="hidden"><label>기존 테마<select id="themeId"><option value="">직접 입력</option></select></label><label>테마명<input id="themeName" required></label><label>매장명<input id="storeName"></label><label>지역<input id="region"></label><label>날짜<input id="date" type="date"></label><label>결과<select id="result"><option value="unknown">미입력</option><option value="success">탈출 성공</option><option value="fail">탈출 실패</option></select></label><label>남은 시간(분)<input id="remaining" type="number" min="0"></label><label>후기 / 메모<textarea id="note" rows="3"></textarea></label><label id="publicLabel" class="hidden"><input id="public" type="checkbox"> 개인 기록을 공동 공개</label><label id="statusLabel" class="hidden">위시 상태<select id="status"><option value="want">가고 싶음</option><option value="planned">예약/계획함</option><option value="played">플레이 완료</option></select></label><button type="submit">저장</button><button type="button" id="cancel">취소</button><p id="formMsg"></p></form></dialog><footer>초대된 멤버 전용 · 개인 기록은 기본 비공개</footer></body></html>
