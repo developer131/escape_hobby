@@ -6,7 +6,23 @@ const ready=!SUPABASE_URL.includes('YOUR_')&&!SUPABASE_PUBLISHABLE_KEY.includes(
 if(!ready||!window.supabase){$('setup').classList.remove('hidden')}else{db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);init()}
 async function init(){let {data:{session}}=await db.auth.getSession();if(session)await enter(session.user);else showAuth();db.auth.onAuthStateChange((e,s)=>setTimeout(()=>s?enter(s.user):showAuth(),0))}
 function showAuth(msg=''){$('auth').classList.remove('hidden');$('app').classList.add('hidden');$('logout').classList.add('hidden');$('authMsg').textContent=msg}
-async function enter(u){user=u;let {data:p,error}=await db.from('profiles').select('nickname,is_approved').eq('id',u.id).maybeSingle();if(error||!p||!p.is_approved){await db.auth.signOut();showAuth('승인되지 않은 계정입니다. 관리자에게 문의하세요.');return}profile=p;$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('logout').classList.remove('hidden');$('welcome').textContent=(p.nickname||u.email)+'님의 방탈출 기록';await reload()}
+async function enter(u){user=u;let {data:p,error}=await db.from('profiles').select('nickname,is_approved').eq('id',u.id).maybeSingle();
+if(error){
+  await db.auth.signOut();
+  showAuth('프로필 조회 오류: '+error.message);
+  return;
+}
+if(!p){
+  await db.auth.signOut();
+  showAuth('프로필 정보가 없습니다.');
+  return;
+}
+if(!p.is_approved){
+  await db.auth.signOut();
+  showAuth('승인되지 않은 계정입니다.');
+  return;
+}
+profile=p;$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('logout').classList.remove('hidden');$('welcome').textContent=(p.nickname||u.email)+'님의 방탈출 기록';await reload()}
 $('login').addEventListener('submit',async e=>{e.preventDefault();$('authMsg').textContent='로그인 중...';let {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('authMsg').textContent=error?error.message:''});$('logout').onclick=()=>db.auth.signOut();
 async function reload(){await Promise.all([loadThemes(),loadShared(),loadPersonal(),loadWishes()])}
 async function loadThemes(){let {data,error}=await db.from('themes').select('*').order('theme_name');if(error)return alert(error.message);themes=data||[];renderThemes();$('themeId').innerHTML='<option value="">직접 입력</option>'+themes.map(t=>`<option value="${t.id}">${esc(t.theme_name)}${t.store_name?' · '+esc(t.store_name):''}</option>`).join('')}
