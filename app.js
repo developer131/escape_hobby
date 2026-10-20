@@ -76,7 +76,7 @@ function renderStats(target,rows){
 
 function renderOverallStats(){
  const host=$('overallStats');if(!host)return;
- const rows=[...shared,...personal];
+ const rows=personal;
  const known=rows.filter(r=>r.result==='success'||r.result==='fail');
  const successes=known.filter(r=>r.result==='success').length;
  const failures=known.filter(r=>r.result==='fail').length;
@@ -86,7 +86,7 @@ function renderOverallStats(){
  host.innerHTML=`<div class="stat-tile stat-total"><span class="stat-icon"><img src="assets/icon-total.png" alt=""></span><span class="stat-label">총 플레이 기록</span><strong>${rows.length}<small>회</small></strong></div><div class="stat-tile stat-success"><span class="stat-icon"><img src="assets/icon-success.png" alt=""></span><span class="stat-label">성공률</span><strong>${pct(successes)}</strong><small class="stat-sub">결과 입력 ${known.length}회 기준</small></div><div class="stat-tile stat-fail"><span class="stat-icon"><img src="assets/icon-fail.png" alt=""></span><span class="stat-label">실패율</span><strong>${pct(failures)}</strong><small class="stat-sub">결과 입력 ${known.length}회 기준</small></div><div class="stat-tile stat-hints"><span class="stat-icon"><img src="assets/icon-hint.png" alt=""></span><span class="stat-label">평균 힌트</span><strong>${avg===null?'—':avg.toFixed(1)}<small>회</small></strong></div>`;
  const monthly={};
  for(const r of rows){const d=String(r.played_at||'');if(!/^\d{4}-\d{2}/.test(d))continue;const key=d.slice(0,7);monthly[key]??={total:0,success:0,fail:0};monthly[key].total++;if(r.result==='success')monthly[key].success++;if(r.result==='fail')monthly[key].fail++}
- const keys=Object.keys(monthly).sort().slice(-12);const max=Math.max(1,...keys.map(k=>monthly[k].total));
+ const keys=Object.keys(monthly).sort();const max=Math.max(1,...keys.map(k=>monthly[k].total));
  $('monthlyStats').innerHTML=keys.length?keys.map(k=>{const m=monthly[k];return `<div class="month-row"><span class="month-label">${k.replace('-','년 ')}월</span><div class="month-track"><span class="month-bar" style="width:${Math.max(3,m.total/max*100)}%"></span></div><b>${m.total}회</b><small>성공 ${m.success} · 실패 ${m.fail}</small></div>`}).join(''):'<p class="muted empty-state">월별 통계를 표시할 기록이 없어요.</p>';
  const unknown=rows.length-known.length;
  $('resultStats').innerHTML=`<div class="result-line"><span class="result-dot success-dot"></span><span>탈출 성공</span><b>${successes}회</b><strong>${pct(successes)}</strong></div><div class="result-line"><span class="result-dot fail-dot"></span><span>탈출 실패</span><b>${failures}회</b><strong>${pct(failures)}</strong></div><div class="result-line"><span class="result-dot unknown-dot"></span><span>결과 미입력</span><b>${unknown}회</b><strong>${rows.length?Math.round(unknown/rows.length*100)+'%':'—'}</strong></div>`;
